@@ -42,6 +42,9 @@ public interface PropertyRepository extends JpaRepository<Property, Long>, JpaSp
             if (filter.getRatingsFrom() != null) {
                 result = result.and(ratingsSpec(filter.getRatingsFrom()));
             }
+            if (filter.getType() != null) {
+                result = result.and(typeSpec(filter.getType()));
+            }
             return result;
         }
 
@@ -74,6 +77,10 @@ public interface PropertyRepository extends JpaRepository<Property, Long>, JpaSp
                 Expression<Double> avg = criteriaBuilder.avg(feedbackJoin.get(Feedback_.rating));
                 return query.groupBy(root).having(criteriaBuilder.greaterThanOrEqualTo(avg, minRating)).getRestriction();
             };
+        }
+
+        private static Specification<Property> typeSpec(PropertyType type) {
+            return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(Property_.type), type);
         }
 
     }

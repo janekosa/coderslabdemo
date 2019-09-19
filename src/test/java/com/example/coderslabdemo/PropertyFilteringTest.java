@@ -4,6 +4,7 @@ import com.example.coderslabdemo.assertions.PropertyAssert;
 import com.example.coderslabdemo.dao.PropertyRepository;
 import com.example.coderslabdemo.domain.Property;
 import com.example.coderslabdemo.domain.PropertyFilter;
+import com.example.coderslabdemo.domain.PropertyType;
 import com.example.coderslabdemo.service.PropertyService;
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,9 +28,6 @@ public class PropertyFilteringTest {
 
     @Autowired
     private PropertyService propertyService;
-
-    @Autowired
-    private PropertyRepository propertyRepository;
 
     @Before
     public void loadData() {
@@ -77,6 +74,17 @@ public class PropertyFilteringTest {
         PropertyAssert.assertThat(filteredProperties.get(0)).hasAvarageRatingEqualTo(4.0);
         PropertyAssert.assertThat(filteredProperties.get(1)).hasRatingsCount(3);
         PropertyAssert.assertThat(filteredProperties.get(1)).hasAvarageRatingEqualTo(7.0);
+    }
+
+    @Test
+    public void testFilterByType() {
+        PropertyFilter filter = PropertyFilter.builder().withType(PropertyType.HOUSE).build();
+        List<Property> filteredProperties = propertyService.get(filter);
+        assertThat(filteredProperties).hasSize(2);
+        for (Property p : filteredProperties) {
+            PropertyAssert.assertThat(p).hasType(PropertyType.HOUSE);
+        }
+
     }
 
 

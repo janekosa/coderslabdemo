@@ -7,14 +7,16 @@ public class PropertyFilter {
     private final Integer roomsTo;
     private final String city;
     private final Double ratingsFrom;
+    private final PropertyType type;
 
-    private PropertyFilter(final Integer areaSqMFrom, final Integer areaSqMTo, final Integer roomsFrom, final Integer roomsTo, final String city, final Double ratingsFrom) {
+    private PropertyFilter(final Integer areaSqMFrom, final Integer areaSqMTo, final Integer roomsFrom, final Integer roomsTo, final String city, final Double ratingsFrom, final PropertyType type) {
         this.areaSqMFrom = areaSqMFrom;
         this.areaSqMTo = areaSqMTo;
         this.roomsFrom = roomsFrom;
         this.roomsTo = roomsTo;
         this.city = city;
         this.ratingsFrom = ratingsFrom;
+        this.type = type;
     }
 
     public static Builder builder() {
@@ -45,6 +47,10 @@ public class PropertyFilter {
         return ratingsFrom;
     }
 
+    public PropertyType getType() {
+        return type;
+    }
+
     public static class Builder {
         private Integer areaSqMFrom;
         private Integer areaSqMTo;
@@ -52,6 +58,7 @@ public class PropertyFilter {
         private Integer roomsTo;
         private String city;
         private Double ratingsFrom;
+        private PropertyType type;
 
         public Builder withSqMFrom(Integer areaSqMFrom) {
             this.areaSqMFrom = areaSqMFrom;
@@ -83,8 +90,13 @@ public class PropertyFilter {
             return this;
         }
 
+        public Builder withType(PropertyType type) {
+            this.type = type;
+            return this;
+        }
+
         public PropertyFilter build() {
-            return new PropertyFilter(areaSqMFrom, areaSqMTo, roomsFrom, roomsTo, city, ratingsFrom);
+            return new PropertyFilter(areaSqMFrom, areaSqMTo, roomsFrom, roomsTo, city, ratingsFrom, type);
         }
 
     }
