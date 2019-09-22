@@ -1,25 +1,22 @@
-package com.example.coderslabdemo.dao;
+package com.example.coderslabdemo.persistance.dao;
 
-import com.example.coderslabdemo.domain.Address;
-import com.example.coderslabdemo.domain.Address_;
-import com.example.coderslabdemo.domain.Feedback;
-import com.example.coderslabdemo.domain.Feedback_;
-import com.example.coderslabdemo.domain.Property;
-import com.example.coderslabdemo.domain.PropertyFilter;
-import com.example.coderslabdemo.domain.PropertyType;
-import com.example.coderslabdemo.domain.Property_;
+import com.example.coderslabdemo.persistance.model.Address;
+import com.example.coderslabdemo.persistance.model.Address_;
+import com.example.coderslabdemo.persistance.model.Feedback;
+import com.example.coderslabdemo.persistance.model.Feedback_;
+import com.example.coderslabdemo.persistance.model.Property;
+import com.example.coderslabdemo.persistance.model.PropertyFilter;
+import com.example.coderslabdemo.persistance.model.Property_;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.ListJoin;
-import java.util.List;
+import javax.persistence.criteria.SetJoin;
+
 
 public interface PropertyRepository extends JpaRepository<Property, Long>, JpaSpecificationExecutor<Property> {
-
-    List<Property> findByType(PropertyType type);
 
     class Specs {
         public static Specification<Property> getFromFilter(PropertyFilter filter) {
@@ -73,13 +70,13 @@ public interface PropertyRepository extends JpaRepository<Property, Long>, JpaSp
 
         private static Specification<Property> ratingsSpec(Double minRating) {
             return (root, query, criteriaBuilder) -> {
-                ListJoin<Property, Feedback> feedbackJoin = root.join(Property_.ratings);
+                SetJoin<Property, Feedback> feedbackJoin = root.join(Property_.ratings);
                 Expression<Double> avg = criteriaBuilder.avg(feedbackJoin.get(Feedback_.rating));
                 return query.groupBy(root).having(criteriaBuilder.greaterThanOrEqualTo(avg, minRating)).getRestriction();
             };
         }
 
-        private static Specification<Property> typeSpec(PropertyType type) {
+        private static Specification<Property> typeSpec(Property.Type type) {
             return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(Property_.type), type);
         }
 

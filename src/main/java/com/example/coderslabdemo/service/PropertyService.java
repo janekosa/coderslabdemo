@@ -1,19 +1,21 @@
 package com.example.coderslabdemo.service;
 
-import com.example.coderslabdemo.domain.Property;
-import com.example.coderslabdemo.domain.PropertyFilter;
-import com.example.coderslabdemo.domain.PropertyType;
+import com.example.coderslabdemo.persistance.model.PropertyFilter;
+import com.example.coderslabdemo.rest.dto.FeedbackDto;
+import com.example.coderslabdemo.rest.dto.PropertyDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PropertyService {
 
-    List<Property> getAll();
+    PropertyDto get(Long id);
 
-    Optional<Property> get(Long id);
+    List<PropertyDto> get(PropertyFilter filter);
 
-    List<Property> getAllByType(PropertyType type);
+    PropertyDto add(PropertyDto dto);
 
-    List<Property> get(PropertyFilter filter);
+    PropertyDto modify(Long id, PropertyDto dto);
+
+    FeedbackDto addFeedback(Long propertyId, FeedbackDto dto);
+
 }

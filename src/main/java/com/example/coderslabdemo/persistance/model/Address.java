@@ -1,4 +1,4 @@
-package com.example.coderslabdemo.domain;
+package com.example.coderslabdemo.persistance.model;
 
 import org.hibernate.validator.constraints.Length;
 

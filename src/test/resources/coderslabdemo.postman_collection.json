@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "3cf1dd30-0176-4726-baba-6ae77bcc1b0a",
+		"name": "coderslabdemo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get properties, read description",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "returns all existing properties\npossible query args:\nInteger areaSqMFrom;\nInteger areaSqMTo;\nInteger roomsFrom;\nInteger roomsTo;\nString city;\nDouble ratingsFrom;\nString type; - allowed valued: \"FLAT\", \"ROOM\", \"HOUSE\";"
+			},
+			"response": []
+		},
+		{
+			"name": "add new property",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"areaSqM\":100,\r\n\"rooms\":5,\r\n\"addressLine1\":\"Example 5\",\r\n\"postcode\":\"00-123\",\r\n\"city\":\"City1\",\r\n\"type\":\"FLAT\"\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties"
+					]
+				},
+				"description": "adds new property"
+			},
+			"response": []
+		},
+		{
+			"name": "get property",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/properties/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties",
+						"1"
+					]
+				},
+				"description": "returns a property for given id with meaningful feedback objects (where additional info is not null)"
+			},
+			"response": []
+		},
+		{
+			"name": "modifies existing property",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"areaSqM\": 100,\r\n    \"rooms\": 5,\r\n    \"addressLine1\": \"Example 5\",\r\n    \"addressLine2\": null,\r\n    \"postcode\": \"00-123\",\r\n    \"city\": \"City1\",\r\n    \"type\": \"FLAT\",\r\n    \"additionalInfo\": \"some additional info\",\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "adds feedback to the given property",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"rating\":3,\r\n    \"additionalInfo\":\"someAdditionalInfo\",\r\n    \"signature\":\"x-peke\"\r\n}"
+				},
+				"url": {
+					"raw": "{{host}}/properties/1/feedback",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"properties",
+						"1",
+						"feedback"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,7 +1,6 @@
-package com.example.coderslabdemo.assertions;
+package com.example.coderslabdemo.assertion;
 
-import com.example.coderslabdemo.domain.Property;
-import com.example.coderslabdemo.domain.PropertyType;
+import com.example.coderslabdemo.persistance.model.Property;
 import org.assertj.core.api.AbstractAssert;
 
 import java.util.Objects;
@@ -45,7 +44,7 @@ public class PropertyAssert extends AbstractAssert<PropertyAssert, Property> {
 
         return this;
     }
-    public PropertyAssert hasType(PropertyType type) {
+    public PropertyAssert hasType(Property.Type type) {
         isNotNull();
 
         if (!Objects.equals(actual.getType(), type)) {

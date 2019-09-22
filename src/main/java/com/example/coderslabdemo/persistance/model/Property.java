@@ -1,14 +1,22 @@
-package com.example.coderslabdemo.domain;
+package com.example.coderslabdemo.persistance.model;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.springframework.data.repository.cdi.Eager;
-
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.OptionalDouble;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static org.apache.logging.log4j.util.Strings.trimToNull;
@@ -35,14 +43,13 @@ public class Property {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private PropertyType type;
+    private Property.Type type;
 
     @Column
     private String additionalInfo;
 
-    @OneToMany
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private List<Feedback> ratings;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Feedback> ratings = new HashSet<>();
 
     /*
      * Cannot be private for Hibernate support.
@@ -50,11 +57,7 @@ public class Property {
     @SuppressWarnings("WeakerAccess")
     Property() {}
 
-    public static Property of(final Integer areaSqM, final Integer rooms, final Address address, final PropertyType type, final String additionalInfo) {
-        return of(areaSqM, rooms, address, type, additionalInfo, null);
-    }
-
-    public static Property of(final Integer areaSqM, final Integer rooms, final Address address, final PropertyType type, final String additionalInfo, final List<Feedback> ratings) {
+    public static Property of(final Integer areaSqM, final Integer rooms, final Address address, final Type type, final String additionalInfo, final Set<Feedback> ratings) {
         Property res = new Property();
 
         res.areaSqM = requireNonNull(areaSqM);
@@ -112,11 +115,11 @@ public class Property {
         this.address = address;
     }
 
-    public PropertyType getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(PropertyType type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -128,11 +131,21 @@ public class Property {
         this.additionalInfo = additionalInfo;
     }
 
-    public List<Feedback> getRatings() {
+    public Set<Feedback> getRatings() {
         return ratings;
     }
 
-    public void setRatings(List<Feedback> ratings) {
+    public void setRatings(Set<Feedback> ratings) {
         this.ratings = ratings;
+    }
+
+    public enum Type {
+        ROOM,
+        HOUSE,
+        FLAT;
+
+        public static Set<String> stringValues() {
+            return Arrays.stream(Type.values()).map(Type::toString).collect(Collectors.toSet());
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.coderslabdemo.domain;
+package com.example.coderslabdemo.persistance.model;
 
 import com.google.common.base.Preconditions;
 
